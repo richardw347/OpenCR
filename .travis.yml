@@ -11,10 +11,7 @@ notifications:
     on_success: change
     on_failure: always
     recipients:
-      - kkw@robotis.com
-      - chc@robotis.com
-      - pyo@robotis.com
-      - akh@robotis.com
+      - richardw347@gmail.com
 
 branches:
   only:

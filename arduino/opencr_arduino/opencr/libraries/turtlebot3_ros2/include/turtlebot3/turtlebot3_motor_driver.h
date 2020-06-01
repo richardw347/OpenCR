@@ -21,13 +21,15 @@
 
 
 enum MortorLocation{
-  LEFT = 0,
-  RIGHT,
+  M1 = 0,
+  M2,
+  M3,
   MOTOR_NUM_MAX
 };
 
 enum VelocityType{
-  LINEAR = 0,
+  LINEAR_X = 0,
+  LINEAR_Y,
   ANGULAR,
   TYPE_NUM_MAX
 };
@@ -47,19 +49,22 @@ class Turtlebot3MotorDriver
   bool set_torque(bool onoff);
   bool get_torque();
   
-  bool read_present_position(int32_t &left_value, int32_t &right_value);
-  bool read_present_velocity(int32_t &left_value, int32_t &right_value);
-  bool read_present_current(int16_t &left_value, int16_t &right_value);
-  bool read_profile_acceleration(uint32_t &left_value, uint32_t &right_value);
+  bool read_present_position(int32_t &m1_value, int32_t &m2_value, int32_t &m3_value);
+  bool read_present_velocity(int32_t &m1_value, int32_t &m2_value, int32_t &m3_value);
+  bool read_present_current(int16_t &m1_value, int16_t &m2_value, int16_t &m3_value);
+  bool read_profile_acceleration(uint32_t &m1_value, uint32_t &m2_value, uint32_t &m3_value);
   
-  bool write_velocity(int32_t left_value, int32_t right_value);
-  bool write_profile_acceleration(uint32_t left_value, uint32_t right_value);
+  bool write_velocity(int32_t m1_value, int32_t m2_value, int32_t m3_value);
+  bool write_profile_acceleration(uint32_t m1_value, uint32_t m2_value, uint32_t m3_value);
 
-  bool control_motors(const float wheel_separation, float linear_value, float angular_value);
+  bool control_motors(float goal_linear_x_velocity, float goal_linear_y_velocity, float goal_angular_velocity);
+
+  void debug_print();
 
  private:
-  uint8_t left_wheel_id_;
-  uint8_t right_wheel_id_;
+  uint8_t m1_wheel_id_;
+  uint8_t m2_wheel_id_;
+  uint8_t m3_wheel_id_;
   bool torque_;
 };
 

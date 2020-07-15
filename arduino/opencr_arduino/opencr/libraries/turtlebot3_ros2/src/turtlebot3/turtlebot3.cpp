@@ -344,17 +344,17 @@ void TurtleBot3Core::begin(const char* model_name)
       DEBUG_PRINTLN("Connected to motors");
 
 
-      for (int i = 0; i < 10; i++) {
-          motor_driver.control_motors(0.2, 0, 0);
-          delay(100);
-      }
-      motor_driver.control_motors(0, 0, 0);
-      for (int i = 0; i < 10; i++) {
-          motor_driver.control_motors(0, 0, 1.5708);
-          delay(100);
-      }
-
-      motor_driver.control_motors(0, 0, 0);
+//      for (int i = 0; i < 10; i++) {
+//          motor_driver.control_motors(0.2, 0, 0);
+//          delay(100);
+//      }
+//      motor_driver.control_motors(0, 0, 0);
+//      for (int i = 0; i < 10; i++) {
+//          motor_driver.control_motors(0, 0, 1.5708);
+//          delay(100);
+//      }
+//
+//      motor_driver.control_motors(0, 0, 0);
 
   }else{
     control_items.device_status = STATUS_NOT_CONNECTED_MOTORS;

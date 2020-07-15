@@ -249,36 +249,35 @@ bool Turtlebot3MotorDriver::control_motors(float goal_linear_x_velocity, float g
   bool dxl_comm_result = false;
 
 
-  int32_t wheel_value[OMNIWHEEL_NUM] = {0, 0, 0};
-  float  wheel_angular_velocity[OMNIWHEEL_NUM] = {0.0, 0.0, 0.0};
+  float  wheel_value[OMNIWHEEL_NUM] = {0, 0, 0};
+  int32_t  wheel_angular_velocity[OMNIWHEEL_NUM] = {0.0, 0.0, 0.0};
 
+  goal_linear_x_velocity = -goal_linear_x_velocity;
+  
   wheel_angular_velocity[M1] = (goal_linear_x_velocity * (sqrt(3) / (2 * WHEEL_RADIUS))) + (goal_linear_y_velocity * (-1 / (2 * WHEEL_RADIUS))) + (goal_angular_velocity * (-DISTANCE_CENTER_TO_WHEEL/WHEEL_RADIUS));
   wheel_angular_velocity[M2] = (goal_linear_x_velocity * (sqrt(3) / (-2 * WHEEL_RADIUS))) + (goal_linear_y_velocity * (-1 / (2 * WHEEL_RADIUS))) + (goal_angular_velocity * (-DISTANCE_CENTER_TO_WHEEL/WHEEL_RADIUS));
   wheel_angular_velocity[M3] = (goal_linear_x_velocity * 0) + (goal_linear_y_velocity * (1 / WHEEL_RADIUS)) + (goal_angular_velocity * (-DISTANCE_CENTER_TO_WHEEL/WHEEL_RADIUS));
 
 
-  wheel_value[M1] = wheel_angular_velocity[M1] * 9.5493 / RPM_CONSTANT_VALUE;
-  wheel_value[M2] = wheel_angular_velocity[M2] * 9.5493 / RPM_CONSTANT_VALUE;
-  wheel_value[M3] = wheel_angular_velocity[M3] * 9.5493 / RPM_CONSTANT_VALUE;
+  wheel_value[M1] = static_cast<int32_t>(wheel_angular_velocity[M1] * 9.5493 / RPM_CONSTANT_VALUE);
+  wheel_value[M2] = static_cast<int32_t>(wheel_angular_velocity[M2] * 9.5493 / RPM_CONSTANT_VALUE);
+  wheel_value[M3] = static_cast<int32_t>(wheel_angular_velocity[M3] * 9.5493 / RPM_CONSTANT_VALUE);
 
 
-//  for (int id = 0; id < OMNIWHEEL_NUM; id++)
-//  {
-//    wheel_value[id] = wheel_angular_velocity[id] * 9.54 /  RPM_CONSTANT_VALUE;
-//
-//    if (wheel_value[id] > LIMIT_X_MAX_VELOCITY)       wheel_value[id] =  LIMIT_X_MAX_VELOCITY;
-//    else if (wheel_value[id] < -LIMIT_X_MAX_VELOCITY) wheel_value[id] = -LIMIT_X_MAX_VELOCITY;
-//  }
-//
+  for (int id = M1; id <= M3; id++)
+  {
+
+    if (wheel_value[id] > LIMIT_X_MAX_VELOCITY)       wheel_value[id] =  LIMIT_X_MAX_VELOCITY;
+    else if (wheel_value[id] < -LIMIT_X_MAX_VELOCITY) wheel_value[id] = -LIMIT_X_MAX_VELOCITY;
+  }
+
   SerialBT2.print("Vx:\t");  SerialBT2.print(goal_linear_x_velocity);
   SerialBT2.print(" Vy:\t"); SerialBT2.print(goal_linear_y_velocity);
   SerialBT2.print(" W:\t");  SerialBT2.println(goal_angular_velocity);
-  SerialBT2.println();
 
   SerialBT2.print("M1:\t");  SerialBT2.print(wheel_angular_velocity[M1]);
   SerialBT2.print(" M2:\t"); SerialBT2.print(wheel_angular_velocity[M2]);
   SerialBT2.print(" M3:\t");  SerialBT2.println(wheel_angular_velocity[M3]);
-  SerialBT2.println();
 
   SerialBT2.print("M1:\t");  SerialBT2.print(wheel_value[M1]);
   SerialBT2.print(" M2:\t"); SerialBT2.print(wheel_value[M2]);
